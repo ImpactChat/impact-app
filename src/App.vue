@@ -1,32 +1,59 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app clipped-left>
+      <v-toolbar-title>Application</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>logout</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-navigation-drawer app clipped>
+      <v-list dense nav>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          :to="item.link"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app padless>
+      <v-col class="text-center" cols="12">
+        {{ new Date().getFullYear() }} — <strong>@tommcn</strong>
+      </v-col>
+    </v-footer>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import Vue from "vue";
 
-#nav {
-  padding: 30px;
-}
+export default Vue.extend({
+  name: "App",
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    items: [
+      { title: "Home", icon: "home", link: "/" },
+      { title: "Chat", icon: "chat", link: "/chat" },
+      { title: "Notes", icon: "notes", link: "/notes" }
+    ]
+  })
+});
+</script>
