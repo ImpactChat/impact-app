@@ -1,4 +1,5 @@
 import { User } from "../entities";
+import settings from "../settings";
 
 const authHeader = (): { Authorization: string } | {} => {
   const storaged = localStorage.getItem("user");
@@ -18,27 +19,23 @@ const logout = (): void => {
 };
 
 const login = async (username: string, password: string): Promise<Response> => {
-  const response = await fetch(
-    `${process.env.VUE_APP_API_URL}/users/authenticate`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    }
-  );
+  const response = await fetch(settings.LOGIN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
   const json = await response.json();
 
   if (!response.ok) {
     if (response.status === 401) {
       logout();
-      location.reload(true);
     }
     const error = (json && json.message) || response.statusText;
     return Promise.reject(error);
   }
 
   const user = json;
-  if (user.token) {
+  if (user.access) {
     localStorage.setItem("user", JSON.stringify(user));
   }
 

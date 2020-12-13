@@ -5,7 +5,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <v-btn icon @click="logout">
         <v-icon>logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -30,6 +30,10 @@
 
     <v-main>
       <v-container fluid>
+        <v-alert elevation="24" :type="alert.type" v-if="alert.message">
+          {{ alert.message }}</v-alert
+        >
+
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -47,6 +51,22 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "App",
+  computed: {
+    alert() {
+      return this.$store.state.alert;
+    }
+  },
+  watch: {
+    $route(/* to, from */) {
+      this.$store.dispatch("alert/clear");
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push({ name: "Login" });
+    }
+  },
 
   data: () => ({
     items: [

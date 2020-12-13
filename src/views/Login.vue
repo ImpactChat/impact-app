@@ -1,0 +1,89 @@
+<template>
+  <form @submit.prevent="handleSubmit">
+    <h1 class="title">Login</h1>
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          v-model="username"
+          type="text"
+          name="username"
+          class="input"
+          :class="{ 'is-danger': submitted && !username }"
+        />
+        <span class="icon is-small is-left">
+          <i class="fa fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right" v-show="submitted && !username">
+          <i class="fa fa-exclamation-triangle"></i>
+        </span>
+      </div>
+      <p class="help is-danger" v-show="submitted && !username">
+        Username is required
+      </p>
+    </div>
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          v-model="password"
+          type="password"
+          name="password"
+          class="input"
+          :class="{ 'is-danger': submitted && !password }"
+        />
+        <span class="icon is-small is-left">
+          <i class="fa fa-lock"></i>
+        </span>
+        <span class="icon is-small is-right" v-show="submitted && !password">
+          <i class="fa fa-exclamation-triangle"></i>
+        </span>
+      </div>
+      <p class="help is-danger" v-show="submitted && !password">
+        Password is required
+      </p>
+    </div>
+    <br />
+    <div class="field">
+      <div class="control">
+        <button class="button is-link">
+          Login
+        </button>
+      </div>
+      <v-progress-circular
+        v-show="loggingIn"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </div>
+  </form>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      username: "user1",
+      password: "Pass1",
+      submitted: false
+    };
+  },
+  computed: {
+    loggingIn() {
+      return this.$store.state.auth.loggingIn;
+    }
+  },
+  created() {
+    this.$store.dispatch("auth/logout");
+  },
+  methods: {
+    handleSubmit() {
+      this.submitted = true;
+      const { username, password } = this;
+      if (username && password) {
+        this.$store.dispatch("auth/login", { username, password });
+      }
+    }
+  }
+};
+</script>
