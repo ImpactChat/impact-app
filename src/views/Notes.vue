@@ -61,7 +61,6 @@ export default Vue.extend({
     compiledMarkdown: function() {
       const rendered = marked(this.input);
       const sanitized = DOMPurify.sanitize(rendered);
-      console.log("Sanitized");
       return sanitized;
     }
   },
