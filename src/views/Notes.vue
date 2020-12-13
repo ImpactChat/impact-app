@@ -1,23 +1,22 @@
 <template>
   <div class="about">
-    <h1>This is a notes page</h1>
+    <slide-x-left-transition :duration="1000" :delay="0">
+      <h1 v-show="show3">This is a notes page</h1>
+    </slide-x-left-transition>
     <div id="editor">
-      <slide-x-left-transition :duration="1000" :delay="0">
+      <slide-y-down-transition :duration="1000" :delay="0">
         <textarea v-show="show" :value="input" @input="update"></textarea>
-      </slide-x-left-transition>
-      <slide-x-left-transition :duration="1000" :delay="200">
-        <div v-show="show2" v-html="compiledMarkdown"></div>
-      </slide-x-left-transition>
+      </slide-y-down-transition>
+      <slide-y-down-transition :duration="1000" :delay="200">
+        <MDOutput v-show="show2" v-bind:compiled="compiledMarkdown"></MDOutput>
+      </slide-y-down-transition>
     </div>
   </div>
 </template>
 <style>
-html,
-body,
 #editor {
   margin: 0;
   height: 100%;
-  font-family: "Helvetica Neue", Arial, sans-serif;
   color: #333;
 }
 
@@ -39,51 +38,46 @@ textarea {
   font-size: 14px;
   font-family: "Monaco", courier, monospace;
   padding: 20px;
-  margin-right: 10px;
   height: 750px;
-}
-#editor div {
-  background-color: #ddd;
-}
-
-code {
-  color: #f66;
-}
-
-blockquote {
-  margin-left: 20px;
 }
 </style>
 
 <script lang="ts">
 import Vue from "vue";
-import { SlideXLeftTransition } from "vue2-transitions";
+import DOMPurify from "dompurify";
 
 import marked from "marked";
 import _ from "lodash";
+import MDOutput from "../components/MarkdownOutput.vue";
 export default Vue.extend({
   data: () => ({
-    input: "# hello",
+    input: "# Hello, World!",
     show: false,
-    show2: false
+    show2: false,
+    show3: false,
+    compiled: ""
   }),
   computed: {
     compiledMarkdown: function() {
-      return marked(this.input); // TODO: Sanitize!!
+      const rendered = marked(this.input);
+      const sanitized = DOMPurify.sanitize(rendered);
+      console.log("Sanitized");
+      return sanitized;
     }
   },
   methods: {
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     update: _.debounce(function(this: any, e) {
       this.input = e.target.value;
     }, 300)
   },
   components: {
-    SlideXLeftTransition
+    MDOutput
   },
   mounted() {
     this.show = true; // might need this.$nextTick
     this.show2 = true; // might need this.$nextTick
+    this.show3 = true; // might need this.$nextTick
   }
 });
 </script>

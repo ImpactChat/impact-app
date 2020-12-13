@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@types/dompurify": "^2.0.4",
     "@types/marked": "^1.2.1",
     "core-js": "^3.6.5",
+    "dompurify": "^2.2.3",
     "lodash": "^4.17.20",
     "marked": "^1.2.5",
     "material-design-icons-iconfont": "^5.0.1",
