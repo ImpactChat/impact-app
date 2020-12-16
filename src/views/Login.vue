@@ -1,71 +1,46 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <h1 class="title">Login</h1>
-    <div class="field">
-      <label class="label">Username</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          v-model="username"
-          type="text"
-          name="username"
-          class="input"
-          :class="{ 'is-danger': submitted && !username }"
-        />
-        <span class="icon is-small is-left">
-          <i class="fa fa-envelope"></i>
-        </span>
-        <span class="icon is-small is-right" v-show="submitted && !username">
-          <i class="fa fa-exclamation-triangle"></i>
-        </span>
-      </div>
-      <p class="help is-danger" v-show="submitted && !username">
-        Username is required
-      </p>
-    </div>
-    <div class="field">
-      <label class="label">Password</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          v-model="password"
-          type="password"
-          name="password"
-          class="input"
-          :class="{ 'is-danger': submitted && !password }"
-        />
-        <span class="icon is-small is-left">
-          <i class="fa fa-lock"></i>
-        </span>
-        <span class="icon is-small is-right" v-show="submitted && !password">
-          <i class="fa fa-exclamation-triangle"></i>
-        </span>
-      </div>
-      <p class="help is-danger" v-show="submitted && !password">
-        Password is required
-      </p>
-    </div>
+  <v-form ref="form" v-model="valid">
+    <h1>Login</h1>
+    <v-text-field
+      prepend-icon="person"
+      label="Username"
+      v-model="username"
+      type="text"
+      name="username"
+      class="input"
+      :rules="nameRules"
+    />
+
+    <v-text-field
+      prepend-icon="lock"
+      label="Password"
+      v-model="password"
+      type="password"
+      name="password"
+      class="input"
+      :rules="nameRules"
+    />
     <br />
-    <div class="field">
-      <div class="control">
-        <button class="button is-link">
-          Login
-        </button>
-      </div>
-      <v-progress-circular
-        v-show="loggingIn"
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
-    </div>
-  </form>
+    <v-btn :disabled="!valid" class="mr-4" @click="handleSubmit()">
+      Submit
+    </v-btn>
+    <v-progress-circular
+      v-show="loggingIn"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-form>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      username: "user1",
-      password: "Pass1",
-      submitted: false
+      username: "",
+      valid: false,
+      password: "",
+      submitted: false,
+      nameRules: [v => !!v || "This field is required"]
     };
   },
   computed: {
@@ -83,6 +58,10 @@ export default {
       if (username && password) {
         this.$store.dispatch("auth/login", { username, password });
       }
+    },
+
+    validate() {
+      this.$refs.form.validate();
     }
   }
 };
