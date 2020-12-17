@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid">
+  <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
     <h1>Login</h1>
     <v-text-field
       prepend-icon="person"
@@ -21,7 +21,12 @@
       :rules="nameRules"
     />
     <br />
-    <v-btn :disabled="!valid" class="mr-4" @click="handleSubmit()">
+    <v-btn
+      :disabled="!valid"
+      class="mr-4"
+      @click="handleSubmit()"
+      type="submit"
+    >
       Submit
     </v-btn>
     <v-progress-circular

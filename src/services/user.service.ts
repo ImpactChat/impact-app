@@ -1,5 +1,6 @@
 import { User } from "../entities";
 import settings from "../settings";
+import jwtDecode, { JwtPayload } from "jwt-decode";
 
 const authHeader = (): { Authorization: string } | {} => {
   const storaged = localStorage.getItem("user");
@@ -61,8 +62,31 @@ const getAllUsers = async (): Promise<User[]> => {
   return json;
 };
 
+const valdateToken = (token: string) => {
+  if (token) {
+    const decoded: JwtPayload = jwtDecode(token);
+    const exp = decoded.exp;
+    const origIat = decoded.iat;
+    if (exp && origIat) {
+      if (
+        exp - Date.now() / 1000 < 1800 &&
+        Date.now() / 1000 - origIat < 628200
+      ) {
+        console.log("New access token needed, refreshing...");
+      } else if (exp - Date.now() / 1000 < 1800) {
+        console.log("Token is fine");
+      } else {
+        console.log("New refresh token needed");
+      }
+    }
+  } else {
+    console.log("No token to test");
+  }
+};
+
 export const userService = {
   login,
   logout,
+  valdateToken,
   getAllUsers
 };
