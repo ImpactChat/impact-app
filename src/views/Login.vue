@@ -21,12 +21,7 @@
       :rules="nameRules"
     />
     <br />
-    <v-btn
-      :disabled="!valid"
-      class="mr-4"
-      @click="handleSubmit()"
-      type="submit"
-    >
+    <v-btn :disabled="!valid" class="mr-4" type="submit">
       Submit
     </v-btn>
     <v-progress-circular
@@ -58,6 +53,7 @@ export default {
   },
   methods: {
     handleSubmit() {
+      console.log("Called");
       this.submitted = true;
       const { username, password } = this;
       if (username && password) {

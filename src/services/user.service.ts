@@ -61,32 +61,66 @@ const getAllUsers = async (): Promise<User[]> => {
 
   return json;
 };
+const updateToken = async (): Promise<Response> => {
+  console.log("[JWT] updateToken method called");
+  const user = localStorage.getItem("user");
+  if (user) {
+    const refresh = JSON.parse(user).refresh;
+    const response = await fetch(settings.REFRESH_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refresh })
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      if (response.status === 401) {
+        logout();
+      }
+      const error = (json && json.message) || response.statusText;
+      return Promise.reject(error);
+    }
 
-const valdateToken = (token: string) => {
+    if (json.access) {
+      const newUser = {
+        refresh: JSON.parse(user).refresh,
+        access: json.access
+      };
+      localStorage.setItem("user", JSON.stringify(newUser));
+    }
+    return json;
+  } else {
+    console.log("No user");
+    return Promise.reject("No user registered in localStorage");
+  }
+};
+
+const validateToken = (token: string) => {
+  console.log("[JWT] Validating token");
   if (token) {
     const decoded: JwtPayload = jwtDecode(token);
     const exp = decoded.exp;
-    const origIat = decoded.iat;
-    if (exp && origIat) {
-      if (
-        exp - Date.now() / 1000 < 1800 &&
-        Date.now() / 1000 - origIat < 628200
-      ) {
-        console.log("New access token needed, refreshing...");
+    if (exp) {
+      if (exp - Date.now() / 1000 < 30) {
+        // 30 second before exp of access token
+        console.log("[JWT] New access token needed, updating...");
+        updateToken();
       } else if (exp - Date.now() / 1000 < 1800) {
-        console.log("Token is fine");
+        console.log("[JWT] Token is fine");
       } else {
-        console.log("New refresh token needed");
+        console.log("[JWT] New refresh token needed");
       }
+    } else {
+      console.log("[JWT] Token doesn't have an exp fied", decoded);
     }
   } else {
-    console.log("No token to test");
+    console.log("[JWT] No token to test");
   }
 };
 
 export const userService = {
   login,
   logout,
-  valdateToken,
-  getAllUsers
+  validateToken,
+  getAllUsers,
+  updateToken
 };
