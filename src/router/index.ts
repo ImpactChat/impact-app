@@ -47,13 +47,22 @@ router.beforeEach((to, from, next) => {
   const publicPages = ["/login"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("user");
-  if (loggedIn) {
-    userService.validateToken(JSON.parse(loggedIn).access);
-    if (authRequired && !loggedIn) {
+  if (loggedIn && authRequired) {
+    console.group("[JWT] Token Validation - Route0r");
+    console.time("[JWT] Token Validation");
+    const valid = userService.validateToken(JSON.parse(loggedIn).access);
+    console.timeEnd("[JWT] Token Validation");
+    console.groupEnd();
+    if (!valid) {
       return next("/login");
+    } else {
+      next();
     }
+  } else if (authRequired && !loggedIn) {
+    return next("/login");
+  } else if (!authRequired) {
+    next();
   }
-  next();
 });
 
 export default router;

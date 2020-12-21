@@ -17,6 +17,7 @@
       v-model="password"
       type="password"
       name="password"
+      autocomplete="current-password"
       class="input"
       :rules="nameRules"
     />

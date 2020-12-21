@@ -74,6 +74,7 @@ const updateToken = async (): Promise<Response> => {
     const json = await response.json();
     if (!response.ok) {
       if (response.status === 401) {
+        console.warn("Refresh token invalid, logging out");
         logout();
       }
       const error = (json && json.message) || response.statusText;
@@ -86,6 +87,7 @@ const updateToken = async (): Promise<Response> => {
         access: json.access
       };
       localStorage.setItem("user", JSON.stringify(newUser));
+      console.info("Successfully refreshed access token");
     }
     return json;
   } else {
@@ -94,7 +96,7 @@ const updateToken = async (): Promise<Response> => {
   }
 };
 
-const validateToken = (token: string) => {
+const validateToken = (token: string): boolean => {
   console.log("[JWT] Validating token");
   if (token) {
     const decoded: JwtPayload = jwtDecode(token);
@@ -102,18 +104,23 @@ const validateToken = (token: string) => {
     if (exp) {
       if (exp - Date.now() / 1000 < 30) {
         // 30 second before exp of access token
-        console.log("[JWT] New access token needed, updating...");
+        console.info("[JWT] New access token needed, updating...");
         updateToken();
+        return true;
       } else if (exp - Date.now() / 1000 < 1800) {
-        console.log("[JWT] Token is fine");
+        console.info("[JWT] Token is fine");
+        return true;
       } else {
-        console.log("[JWT] New refresh token needed");
+        console.info("[JWT] New refresh token needed");
+        return false;
       }
     } else {
-      console.log("[JWT] Token doesn't have an exp fied", decoded);
+      console.info("[JWT] Token doesn't have an exp fied", decoded);
+      return false;
     }
   } else {
-    console.log("[JWT] No token to test");
+    console.info("[JWT] No token to test");
+    return false;
   }
 };
 
