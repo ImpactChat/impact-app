@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("user");
   if (loggedIn && authRequired) {
-    console.group("[JWT] Token Validation - Route0r");
+    console.group("[JWT] Token Validation - Router");
     console.time("[JWT] Token Validation");
     const valid = userService.validateToken(JSON.parse(loggedIn).access);
     console.timeEnd("[JWT] Token Validation");

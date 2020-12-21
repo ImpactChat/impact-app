@@ -1,3 +1,4 @@
+// const BASE_URL = "http://impact.tommcn.mcnamer.ca";
 const BASE_URL = "http://localhost:8000";
 const LOGIN_URL = BASE_URL + "/api/token/";
 const REFRESH_URL = BASE_URL + "/api/token/refresh/";

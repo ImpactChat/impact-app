@@ -7,6 +7,7 @@
       v-model="username"
       type="text"
       name="username"
+      autocomplete="username"
       class="input"
       :rules="nameRules"
     />
