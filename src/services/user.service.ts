@@ -1,6 +1,7 @@
 import { User } from "../entities";
 import settings from "../settings";
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import firebase from "firebase";
 
 const authHeader = (): { Authorization: string } | {} => {
   const storaged = localStorage.getItem("user");
@@ -16,31 +17,17 @@ const authHeader = (): { Authorization: string } | {} => {
 };
 
 const logout = (): void => {
-  localStorage.removeItem("user");
+  firebase.auth().signOut();
 };
-
-const login = async (username: string, password: string): Promise<Response> => {
-  const response = await fetch(settings.LOGIN_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
-  });
-  const json = await response.json();
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      logout();
-    }
-    const error = (json && json.message) || response.statusText;
-    return Promise.reject(error);
+const login = async (username: string, password: string): Promise<object> => {
+  try {
+    const res = await firebase
+      .auth()
+      .signInWithEmailAndPassword(username, password);
+    return res;
+  } catch (err) {
+    return Promise.reject(err);
   }
-
-  const user = json;
-  if (user.access) {
-    localStorage.setItem("user", JSON.stringify(user));
-  }
-
-  return user;
 };
 
 const getAllUsers = async (): Promise<User[]> => {

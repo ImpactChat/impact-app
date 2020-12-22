@@ -1,36 +1,42 @@
 <template>
   <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
-    <h1>Login</h1>
-    <v-text-field
-      prepend-icon="person"
-      label="Username"
-      v-model="username"
-      type="text"
-      name="username"
-      autocomplete="username"
-      class="input"
-      :rules="nameRules"
-    />
+    <v-container>
+      <v-row>
+        <v-col cols="12" lg="4"> </v-col>
+        <v-col cols="12" lg="4">
+          <v-card elevation="2" :loading="loggingIn">
+            <v-card-title>
+              Login
+            </v-card-title>
+            <v-card-text>
+              <v-text-field
+                prepend-icon="person"
+                label="Username"
+                v-model="username"
+                type="text"
+                name="username"
+                autocomplete="username"
+                :rules="nameRules"
+              />
 
-    <v-text-field
-      prepend-icon="lock"
-      label="Password"
-      v-model="password"
-      type="password"
-      name="password"
-      autocomplete="current-password"
-      class="input"
-      :rules="nameRules"
-    />
-    <br />
-    <v-btn :disabled="!valid" class="mr-4" type="submit">
-      Submit
-    </v-btn>
-    <v-progress-circular
-      v-show="loggingIn"
-      indeterminate
-      color="primary"
-    ></v-progress-circular>
+              <v-text-field
+                prepend-icon="lock"
+                label="Password"
+                v-model="password"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                :rules="nameRules"
+              />
+
+              <v-btn :disabled="!valid" type="submit">
+                Submit
+              </v-btn>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-form>
 </template>
 
@@ -55,7 +61,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log("Called");
+      console.log("[AUTH] Attempting log in");
       this.submitted = true;
       const { username, password } = this;
       if (username && password) {

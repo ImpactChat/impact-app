@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import { userService } from "../services/user.service";
+import firebase from "firebase";
 
 Vue.use(VueRouter);
 
@@ -46,23 +46,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login"];
   const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem("user");
-  if (loggedIn && authRequired) {
-    console.group("[JWT] Token Validation - Router");
-    console.time("[JWT] Token Validation");
-    const valid = userService.validateToken(JSON.parse(loggedIn).access);
-    console.timeEnd("[JWT] Token Validation");
-    console.groupEnd();
-    if (!valid) {
-      return next("/login");
-    } else {
-      next();
-    }
-  } else if (authRequired && !loggedIn) {
-    return next("/login");
+  const loggedIn = firebase.auth().currentUser;
+  if (loggedIn !== null) {
+    next();
+    return;
   } else if (!authRequired) {
     next();
+    return;
   }
+  return next("/login");
 });
 
 export default router;
