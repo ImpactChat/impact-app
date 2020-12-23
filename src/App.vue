@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app clipped-left>
+    <v-app-bar app clipped-left color="blue accent-4" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Application</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -9,7 +10,7 @@
         <v-icon>logout</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer app clipped>
+    <v-navigation-drawer app clipped v-model="drawer">
       <v-list dense nav>
         <v-list-item
           v-for="item in items"
@@ -59,6 +60,9 @@ export default Vue.extend({
   watch: {
     $route(/* to, from */) {
       this.$store.dispatch("alert/clear");
+    },
+    group() {
+      this.drawer = false;
     }
   },
   methods: {
@@ -69,6 +73,7 @@ export default Vue.extend({
   },
 
   data: () => ({
+    drawer: false,
     items: [
       { title: "Home", icon: "home", link: "/" },
       { title: "Chat", icon: "chat", link: "/chat" },

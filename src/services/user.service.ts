@@ -21,6 +21,7 @@ const logout = (): void => {
 };
 const login = async (username: string, password: string): Promise<object> => {
   try {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     const res = await firebase
       .auth()
       .signInWithEmailAndPassword(username, password);

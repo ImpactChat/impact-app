@@ -25,7 +25,6 @@ const configOptions = {
 };
 
 firebase.initializeApp(configOptions);
-firebase.analytics();
 
 new Vue({
   router,

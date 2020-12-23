@@ -74,9 +74,9 @@ export default Vue.extend({
     MDOutput
   },
   mounted() {
-    this.show = true; // might need this.$nextTick
-    this.show2 = true; // might need this.$nextTick
-    this.show3 = true; // might need this.$nextTick
+    this.show = true;
+    this.show2 = true;
+    this.show3 = true;
   }
 });
 </script>
