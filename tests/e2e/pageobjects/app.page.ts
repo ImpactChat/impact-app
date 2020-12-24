@@ -3,7 +3,7 @@ class App {
    * elements
    */
   get heading() {
-    return $("h1");
+    return $("div.v-card__title");
   }
 
   /**
