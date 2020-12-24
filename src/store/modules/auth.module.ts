@@ -3,29 +3,27 @@ import { RootState, AuthState } from "./interfaces";
 import { userService } from "../../services";
 import router from "../../router";
 
-let initialState = {
+export const initialState = {
   loggingIn: false,
-  loggedIn: false,
+  loggedIn: true,
   user: undefined
 };
-
-const storaged = localStorage.getItem("user");
-
-if (storaged) {
-  const user = JSON.parse(storaged);
-  if (user) {
-    initialState = {
-      loggingIn: false,
-      loggedIn: true,
-      user
-    };
-  }
-}
 
 export const auth: Module<AuthState, RootState> = {
   namespaced: true,
   state: initialState,
   actions: {
+    fetchUser({ commit }, user) {
+      commit("setLoggedIn", user !== null);
+      if (user) {
+        commit("setUser", {
+          displayName: user.displayName,
+          email: user.email
+        });
+      } else {
+        commit("setUser", null);
+      }
+    },
     login({ dispatch, commit }, { username, password }): void {
       commit("loginRequest", { username });
       userService.login(username, password).then(
@@ -42,6 +40,11 @@ export const auth: Module<AuthState, RootState> = {
     logout({ commit }): void {
       userService.logout();
       commit("logout");
+    }
+  },
+  getters: {
+    user(state) {
+      return state.user;
     }
   },
   mutations: {
@@ -62,6 +65,12 @@ export const auth: Module<AuthState, RootState> = {
       state.loggingIn = false;
       state.loggedIn = false;
       state.user = undefined;
+    },
+    setLoggedIn(state, value) {
+      state.user = value;
+    },
+    setUser(state, data) {
+      state.user = data;
     }
   }
 };

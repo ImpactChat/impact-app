@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import firebase from "firebase";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -46,8 +46,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login"];
   const authRequired = !publicPages.includes(to.path);
-  const loggedIn = firebase.auth().currentUser;
-  if (loggedIn !== null) {
+  /* tslint:disable-next-line */
+  const loggedIn = store.state.auth.loggedIn;
+  if (loggedIn) {
     next();
     return;
   } else if (!authRequired) {

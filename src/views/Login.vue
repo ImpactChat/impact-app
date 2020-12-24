@@ -57,7 +57,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("auth/logout");
+    // this.$store.dispatch("auth/logout");
   },
   methods: {
     handleSubmit() {

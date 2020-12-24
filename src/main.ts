@@ -26,6 +26,17 @@ const configOptions = {
 
 firebase.initializeApp(configOptions);
 
+firebase.auth().onAuthStateChanged(user => {
+  console.log("[AUTH] onAuthStateChanged called with user", user);
+  store.dispatch("auth/fetchUser", user);
+  if (user === null) {
+    store.commit("auth/logout");
+    if (router.currentRoute.name !== "Login") {
+      router.push("/login");
+    }
+  }
+});
+
 new Vue({
   router,
   store,
