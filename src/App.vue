@@ -77,7 +77,8 @@ export default Vue.extend({
     items: [
       { title: "Home", icon: "home", link: "/" },
       { title: "Chat", icon: "chat", link: "/chat" },
-      { title: "Notes", icon: "notes", link: "/notes" }
+      { title: "Notes", icon: "notes", link: "/notes" },
+      { title: "Codes", icon: "code", link: "/codes" }
     ]
   })
 });

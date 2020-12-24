@@ -18,7 +18,8 @@ export const auth: Module<AuthState, RootState> = {
       if (user) {
         commit("setUser", {
           displayName: user.displayName,
-          email: user.email
+          email: user.email,
+          rawUser: user
         });
       } else {
         commit("setUser", null);
