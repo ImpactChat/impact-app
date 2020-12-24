@@ -1,5 +1,9 @@
-// const BASE_URL = "http://impact.tommcn.mcnamer.ca";
-const BASE_URL = "http://localhost:8000";
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://impact.tommcn.mcnamer.ca"
+    : "http://localhost:8000";
+
+console.log("PROCESS ENV", process.env.NODE_ENV);
 
 const CODES_ENDPOINT = BASE_URL + "/api/codes/codes";
 
