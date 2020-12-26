@@ -5,7 +5,7 @@ const BASE_URL =
     ? "https://impact.tommcn.mcnamer.ca"
     : "http://localhost:8000";
 
-const CODES_ENDPOINT = BASE_URL + "/api/codes/codes";
+const CODES_ENDPOINT = BASE_URL + "/api/codes/codes/";
 
 export default {
   BASE_URL,

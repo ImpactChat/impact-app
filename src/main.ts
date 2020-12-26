@@ -9,10 +9,13 @@ import "@babel/polyfill";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import firebase from "firebase";
+import VJsf from "@koumoul/vjsf";
 
 Vue.config.productionTip = false;
 Vue.use(VuePageTransition);
 Vue.use(Transitions);
+
+Vue.component("VJsf", VJsf);
 
 const configOptions = {
   apiKey: "AIzaSyDtux_OyJp2slSDOHpGs8ihICfqDGhjsMA",
