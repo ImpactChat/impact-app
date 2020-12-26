@@ -1,9 +1,9 @@
+console.log("Running", process.env.NODE_ENV, "version");
+
 const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://impact.tommcn.mcnamer.ca"
     : "http://localhost:8000";
-
-console.log("PROCESS ENV", process.env.NODE_ENV);
 
 const CODES_ENDPOINT = BASE_URL + "/api/codes/codes";
 
