@@ -9,6 +9,7 @@ import "@babel/polyfill";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import firebase from "firebase";
+import "firebase/performance";
 import VJsf from "@koumoul/vjsf";
 
 Vue.config.productionTip = false;
@@ -28,6 +29,8 @@ const configOptions = {
 };
 
 firebase.initializeApp(configOptions);
+firebase.performance();
+firebase.analytics();
 
 firebase.auth().onAuthStateChanged(user => {
   console.log("[AUTH] onAuthStateChanged called with user", user);
