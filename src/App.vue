@@ -39,7 +39,6 @@
         <v-alert elevation="24" :type="alert.type" v-if="alert.message">
           {{ alert.message }}</v-alert
         >
-
         <router-view></router-view>
       </v-container>
     </v-main>
