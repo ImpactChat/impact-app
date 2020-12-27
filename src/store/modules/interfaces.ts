@@ -1,4 +1,5 @@
 import { User } from "@/entities";
+import { Code } from "@/entities";
 
 export interface RootState {
   version: string;
@@ -19,4 +20,13 @@ export interface UsersState {
   loading: boolean;
   users: User[];
   error?: Error;
+}
+
+export interface CodesState {
+  fetching: boolean;
+  codes: Array<Code>;
+}
+
+export interface PreferencesState {
+  dark: boolean;
 }

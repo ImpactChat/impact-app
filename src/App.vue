@@ -5,6 +5,11 @@
       <v-toolbar-title>Application</v-toolbar-title>
 
       <v-spacer></v-spacer>
+      <v-btn icon @click="$store.dispatch('preferences/toggleDarkMode')">
+        <v-icon>{{
+          $store.state.preferences.dark ? "brightness_4" : "brightness_7"
+        }}</v-icon>
+      </v-btn>
 
       <v-btn icon @click="logout">
         <v-icon>logout</v-icon>
@@ -76,8 +81,8 @@ export default Vue.extend({
     drawer: false,
     items: [
       { title: "Home", icon: "home", link: "/" },
-      { title: "Chat", icon: "chat", link: "/chat" },
-      { title: "Notes", icon: "notes", link: "/notes" },
+      // { title: "Chat", icon: "chat", link: "/chat" },
+      // { title: "Notes", icon: "notes", link: "/notes" },
       { title: "Codes", icon: "code", link: "/codes" }
     ]
   })

@@ -43,6 +43,8 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
+vuetify.framework.theme.dark = store.state.preferences.dark;
+
 new Vue({
   router,
   store,

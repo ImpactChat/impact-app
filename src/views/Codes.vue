@@ -9,7 +9,12 @@
 
     <v-container v-show="show1">
       <v-row>
-        <v-col cols="12" lg="4" v-for="item in data" :key="item.pk">
+        <v-col
+          cols="12"
+          lg="4"
+          v-for="item in this.$store.state.codes.codes"
+          :key="item.pk"
+        >
           <v-card elevation="2" shaped :key="item.pk" class="card">
             <v-card-title>
               {{ item.name }}
@@ -87,8 +92,7 @@ export default Vue.extend({
   },
   methods: {
     async fetchData() {
-      const data = await codeService.getCodes();
-      this.data = data;
+      this.$store.dispatch("codes/fetchCodes");
       this.show1 = true;
     },
     async addCode() {
