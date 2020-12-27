@@ -1,5 +1,7 @@
 {
-  "name": "jwt",
+  "name": "impactapp",
+  "description": "A client for the impact project",
+  "author": "@tommcn",
   "version": "0.1.0",
   "private": true,
   "scripts": {
