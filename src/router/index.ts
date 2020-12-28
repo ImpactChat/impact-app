@@ -17,7 +17,6 @@ const routes: Array<RouteConfig> = [
     name: "Login",
     component: Login
   },
-
   {
     path: "/chat",
     name: "Chat",

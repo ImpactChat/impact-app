@@ -13,8 +13,30 @@ const login = async (username: string, password: string): Promise<object> => {
     return Promise.reject(err);
   }
 };
+const loginMS = async (): Promise<object> => {
+  try {
+    const provider = new firebase.auth.OAuthProvider("microsoft.com");
+    const res = await firebase.auth().signInWithPopup(provider);
+    return res;
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+};
+const loginApple = async (): Promise<object> => {
+  try {
+    const provider = new firebase.auth.OAuthProvider("apple.com");
+    const res = await firebase.auth().signInWithPopup(provider);
+    return res;
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+};
 
 export const userService = {
   login,
+  loginMS,
+  loginApple,
   logout
 };

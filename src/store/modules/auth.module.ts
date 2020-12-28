@@ -38,6 +38,30 @@ export const auth: Module<AuthState, RootState> = {
         }
       );
     },
+    loginMS({ dispatch, commit }): void {
+      userService.loginMS().then(
+        user => {
+          commit("loginSuccess", user);
+          router.push("/");
+        },
+        (error: Error) => {
+          commit("loginFailure", error);
+          dispatch("alert/error", error, { root: true });
+        }
+      );
+    },
+    loginApple({ dispatch, commit }): void {
+      userService.loginApple().then(
+        user => {
+          commit("loginSuccess", user);
+          router.push("/");
+        },
+        (error: Error) => {
+          commit("loginFailure", error);
+          dispatch("alert/error", error, { root: true });
+        }
+      );
+    },
     logout({ commit }): void {
       userService.logout();
       commit("logout");

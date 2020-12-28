@@ -28,10 +28,27 @@
                 autocomplete="current-password"
                 :rules="nameRules"
               />
-
-              <v-btn :disabled="!valid" type="submit">
-                Submit
-              </v-btn>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" lg="3">
+                    <v-btn :disabled="!valid" type="submit">
+                      Log In
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="6">
+                    <v-btn @click="signinMS()">
+                      Log in with Microsoft
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="12" lg="6">
+                    <v-btn @click="signinApple()">
+                      Log in with Apple
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-card-text>
           </v-card>
         </v-col>
@@ -67,6 +84,12 @@ export default {
       if (username && password) {
         this.$store.dispatch("auth/login", { username, password });
       }
+    },
+    signinMS() {
+      this.$store.dispatch("auth/loginMS");
+    },
+    signinApple() {
+      this.$store.dispatch("auth/loginApple");
     },
 
     validate() {
